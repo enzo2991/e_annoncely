@@ -1,4 +1,4 @@
-local player = {}
+local PlayerData
 
 if Config.Framework == 'auto' then
     if GetResourceState("es_extended") == 'started' then
@@ -10,23 +10,22 @@ end
 
 if Config.Framework == 'esx' then
     RegisterNetEvent("esx:playerLoaded",function(xPlayer)
-        player.PlayerData = xPlayer
+        PlayerData = xPlayer
     end)
 
      RegisterNetEvent("esx:setJob",function(job)
-         player.PlayerData.job = job
+         PlayerData.job = job
      end)
 
 elseif Config.Framework == 'qb' then
 
     RegisterNetEvent("QBCore:Client:OnPlayerLoaded",function(Player)
-        player.PlayerData = Player
+        PlayerData = Player
     end)
 
-    RegisterNetEvent("QBCore:Client:OnJobUpdate",function(job)
-        player.PlayerData.job = job
+    RegisterNetEvent("QBCore:Client:OnJobUpdate",function(JobInfo)
+        PlayerData.job = JobInfo
     end)
-
 end
 
 
@@ -81,10 +80,10 @@ AddEventHandler("onResourceStart", function(resource)
     end
 end)
 
-RegisterNUICallback('getJob',function(data,cb)
+RegisterNUICallback('getJob',function(_,cb)
     local job = {
-        name = player.PlayerData.job.name,
-        gradeName = player.PlayerData.job.grade_name
+        name = PlayerData.job.name,
+        gradeName = PlayerData.job.grade_name
     }
     cb(job)
 end)
