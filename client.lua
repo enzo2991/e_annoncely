@@ -69,6 +69,12 @@ end
 
 addApp()
 
+local function drawNotification(text)
+    SetNotificationTextEntry("STRING")
+    AddTextComponentString(text)
+    DrawNotification(false, false)
+end
+
 AddEventHandler("onResourceStart", function(resource)
     if resource == "lb-phone" then
         addApp()
@@ -94,5 +100,5 @@ RegisterNUICallback("sendAnnounce", function(data, cb)
 end)
 
 RegisterNetEvent('lb-announcely:Announce',function(data)
-    exports['lb-CustomNotif']:Send('<b>' .. data.title.. '</b>' ..'\n' .. data.text, 45,'info', 'WEB_ANNONCELY')
+    drawNotification(data.title..'\n'..data.text)
 end)
